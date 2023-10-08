@@ -1,5 +1,6 @@
 const express = require('express'),
      app = express();
+require('express-async-errors')//global error handler initiated
 
 const db = require('./db')
 employeeRoutes = require('./controllers/employeeControllers')
@@ -11,7 +12,7 @@ app.use('/api/employees', employeeRoutes)
 //global error catcher from express docs
 app.use((err,req,res,next) => {
     console.log(err)
-    res.status(err.status || 500).send('something went wrong')
+    res.status(err.status || 500).send('Something went wrong!')
 })
 
 db.query("SELECT 1")
