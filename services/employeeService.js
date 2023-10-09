@@ -7,11 +7,23 @@ const db=require('../db')
 }
 
 module.exports.getEmployeeById = async (id)=>{
-    const [record] = await db.query("SELECT * FROM employees WHERE id = ?", [id])//this syntax is recommended per the mysql spm documentation. This is more secure
+    const [[record]] = await db.query("SELECT * FROM employees WHERE id = ?", [id])//this syntax is recommended per the mysql spm documentation. This is more secure
     return record;
 }
 
 module.exports.deleteEmployee = async (id)=>{
-    const [record] = await db.query("DELETE FROM employees WHERE id = ?", [id])//this syntax is recommended per the mysql spm documentation. This is more secure
-    return record.affectedRows;
+    const [{affectedRows}] = await db.query("DELETE FROM employees WHERE id = ?", [id])//this syntax is recommended per the mysql spm documentation. This is more secure
+    return affectedRows;
+}
+
+module.exports.addOrEditEmployee = async (obj,id = 0)=>{
+    const [{affectedRows}] = await db.query("CALL usp_employee_add_or_edit(?,?,?,?,?)", 
+    [id,obj.name,obj.position,obj.location,obj.salary])//this syntax is recommended per the mysql spm documentation. This is more secure
+    return affectedRows;
+}
+
+module.exports.addOrEditEmployee = async (obj,id = 0)=>{
+    const [[[{affectedRows}]]] = await db.query("CALL usp_employee_add_or_edit(?,?,?,?,?)", 
+    [id,obj.name,obj.position,obj.location,obj.salary])//this syntax is recommended per the mysql spm documentation. This is more secure
+    return affectedRows;
 }

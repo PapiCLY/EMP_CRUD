@@ -12,7 +12,7 @@ router.get('/',  async(req, res)=>{
 
 router.get('/:id',  async(req, res)=>{
     const employee = await service.getEmployeeById(req.params.id)
-    if(employee.length === 0){
+    if(employee === undefined){
 res.status(404).json('No record with given id: ' + req.params.id)
     }else
     res.send(employee)
@@ -24,6 +24,19 @@ router.delete('/:id',  async(req, res)=>{
 res.status(404).json('No record with given id: ' + req.params.id)
     }else
     res.send('Deleted employee successfully!')
+})
+
+router.post('/',  async(req, res)=>{
+    await service.addOrEditEmployee(req.body)
+    res.status(201).send('Created successfully!')
+})
+
+router.put('/:id',  async(req, res)=>{
+    const affectedRows = await service.addOrEditEmployee(req.body, req.params.id)
+    if(affectedRows === 0){
+        res.status(404).json('No record with given id: ' + req.params.id)
+            }else
+            res.send('Updated employee successfully!')
 })
 
 module.exports = router;
