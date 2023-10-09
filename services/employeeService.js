@@ -10,3 +10,8 @@ module.exports.getEmployeeById = async (id)=>{
     const [record] = await db.query("SELECT * FROM employees WHERE id = ?", [id])//this syntax is recommended per the mysql spm documentation. This is more secure
     return record;
 }
+
+module.exports.deleteEmployee = async (id)=>{
+    const [record] = await db.query("DELETE FROM employees WHERE id = ?", [id])//this syntax is recommended per the mysql spm documentation. This is more secure
+    return record.affectedRows;
+}

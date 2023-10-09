@@ -18,4 +18,12 @@ res.status(404).json('No record with given id: ' + req.params.id)
     res.send(employee)
 })
 
+router.delete('/:id',  async(req, res)=>{
+    const affectedRows = await service.deleteEmployee(req.params.id)
+    if(affectedRows === 0){
+res.status(404).json('No record with given id: ' + req.params.id)
+    }else
+    res.send('Deleted employee successfully!')
+})
+
 module.exports = router;
